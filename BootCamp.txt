@@ -7,9 +7,19 @@ eiei
 
 >>>>>>> c5db4275a3a5785b7b7dcd89d1d2a64fc42e7889
 สวัสดี
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 
 >>>>>>> e49b80ec3d79dffc43c11346130c2d5d362e6adc
 =======
 หนีเรียน
+<<<<<<< HEAD
 
+=======
+>>>>>>> f05bfb35187fd8cb2f78a6ec901024fe7bc0debd
+=======
+หนีห่าว
+belloooooooo
+>>>>>>> Stashed changes
+belloooooooooooooo
+>>>>>>> c7b82b71a0747b460ee3683ce9392110b0f00a49
