@@ -3,5 +3,9 @@ eiei
 =======
 hello
 สวัสดี
+<<<<<<< HEAD
 หนีห่าว
 >>>>>>> e49b80ec3d79dffc43c11346130c2d5d362e6adc
+=======
+หนีเรียน
+>>>>>>> f05bfb35187fd8cb2f78a6ec901024fe7bc0debd
