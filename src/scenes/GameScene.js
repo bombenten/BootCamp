@@ -39,17 +39,7 @@ class GameScene extends Phaser.Scene {
         player = this.physics.add.sprite(225, 600, 'player').setScale(5);
         player.setCollideWorldBounds(true);
 
-        this.anims.create({
-            key: 'allAni',
-            frames: this.anims.generateFrameNumbers('player', {
-                start: 0,
-                end: 8
-            }),
-            duration: 400,
-            repeat: -1
-        })
-        // player.anims.play('allAni', true);
-
+        //Go Animation
         this.anims.create({
             key: 'goAni',
             frames: this.anims.generateFrameNumbers('player', {
@@ -59,8 +49,7 @@ class GameScene extends Phaser.Scene {
             duration: 400,
             repeat: -1
         })
-        // player.anims.play('goAni', true);
-
+        //Back Animation
         this.anims.create({
             key: 'backAni',
             frames: this.anims.generateFrameNumbers('player', {
@@ -70,8 +59,7 @@ class GameScene extends Phaser.Scene {
             duration: 400,
             repeat: -1
         })
-        // player.anims.play('backAni', true);
-
+        //Left Animation
         this.anims.create({
             key: 'leftAni',
             frames: this.anims.generateFrameNumbers('player', {
@@ -81,8 +69,7 @@ class GameScene extends Phaser.Scene {
             duration: 400,
             repeat: -1
         })
-        // player.anims.play('leftAni', true);
-
+        //Right Animation
         this.anims.create({
             key: 'rightAni',
             frames: this.anims.generateFrameNumbers('player', {
@@ -92,10 +79,8 @@ class GameScene extends Phaser.Scene {
             duration: 400,
             repeat: -1
         })
-        // player.anims.play('rightAni', true).setFlipX(true);
 
-
-
+        //Girl Animation
         this.anims.create({
             key: 'girlAni',
             frames: this.anims.generateFrameNumbers('girl', {
@@ -105,8 +90,6 @@ class GameScene extends Phaser.Scene {
             duration: 400,
             repeat: -1
         })
-
-
 
         girlGroup = this.physics.add.group();
 
@@ -125,7 +108,7 @@ class GameScene extends Phaser.Scene {
             paused: false,
         });
 
-        function girlDestroy(player, girl,){
+        function girlDestroy(player, girl,) {
             girl.destroy();
 
         }
@@ -143,38 +126,53 @@ class GameScene extends Phaser.Scene {
 
         background.tilePositionY -= 1;
 
-        if (keyW.isDown) {
-            player.setVelocityY(-500);
+        if (keyW.isDown && !keyA.isDown && !keyD.isDown) {
+            player.setVelocityY(-350);
         } else if (keyS.isDown && !keyA.isDown && !keyD.isDown) {
-            player.setVelocityY(400);
+            player.setVelocityY(500);
             player.anims.play('backAni', true);
         } else if (!keyA.isDown && !keyD.isDown) {
             player.setVelocityY(0);
             player.anims.play('goAni', true);
         }
-        if (keyA.isDown && keyS.isDown) {
+
+        if (keyD.isDown && keyW.isDown) {
+            player.setVelocityX(500);
+            player.setVelocityY(-350);
+            player.anims.play('rightAni', true).setFlipX(true);
+        }else if (keyA.isDown && keyW.isDown) {
             player.setVelocityX(-500);
-            player.setVelocityY(400);
+            player.setVelocityY(-350);
+            player.anims.play('leftAni', true).setFlipX(false);
+        }else if (keyA.isDown && keyS.isDown) {
+            player.setVelocityX(-500);
+            player.setVelocityY(500);
             player.anims.play('leftAni', true).setFlipX(false);
         } else if (keyD.isDown && keyS.isDown) {
             player.setVelocityX(500);
-            player.setVelocityY(400);
+            player.setVelocityY(500);
             player.anims.play('rightAni', true).setFlipX(true);
         } else if (keyA.isDown) {
             player.setVelocityX(-500);
+            player.setVelocityY(0);
             player.anims.play('leftAni', true).setFlipX(false);
         } else if (keyD.isDown) {
             player.setVelocityX(500);
+            player.setVelocityY(0);
             player.anims.play('rightAni', true).setFlipX(true);
-        } else {
+        } else if(keyS.isDown){
             player.setVelocityX(0);
+            player.setVelocityY(500);
+        }else if (!keyS.isDown) {
+            player.setVelocityX(0);
+            player.anims.play('goAni', true);
         }
 
         for (let i = 0; i < girlGroup.getChildren().length; i++) {
-            if (girlGroup.getChildren()[i].y > 720+50) {
+            if (girlGroup.getChildren()[i].y > 720 + 50) {
                 girlGroup.getChildren()[i].destroy();
             }
         }
     }
 }
-    export default GameScene;
+export default GameScene;
