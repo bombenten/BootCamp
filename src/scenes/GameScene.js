@@ -43,28 +43,29 @@ class GameScene extends Phaser.Scene {
         .setCollideWorldBounds(true)
         .setScale(0.5);
 
-        // monsterGroup = this.physics.add.group();
+        monsterGroup = this.physics.add.group();
 
         //Monster Event
         monsterEvent = this.time.addEvent({
-            delay: Phaser.Math.Between(1000, 3000),
+            delay: Phaser.Math.Between(500, 1000),
             callback: function () {
                 monster = this.physics.add.image(Phaser.Math.Between(1, 450), 0, 'monster')
                 .setScale(0.3);
-                
-                
-                // monsterGroup.add(monster);
-                // monsterGroup.setVelocityY(200);
-                
-                // this.physics.add.collider(cookie, monster, () => {
-                    
-                //     this.scene.start('GameOver');
-                // });
+                monster.setVelocityY(200);
+                monsterGroup.add(monster);
+                // this.physics.add.collider(cookiePlayer, monsterGroup);
+
+                this.physics.add.collider(cookiePlayer, monster, DestroyMonster);
             },
             callbackScope: this,
             loop: true,
             paused: false
         })
+
+        function DestroyMonster(cookiePlayer, monster){
+            monster.destroy();
+        }
+
         // this.physics.add.collider(cookie, monster);
         
         //Player Pointermove
@@ -101,6 +102,12 @@ class GameScene extends Phaser.Scene {
             cookiePlayer.setVelocityX(500);
         }else{
             cookiePlayer.setVelocityX(0);
+        }
+
+        for (let i = 0; i < monsterGroup.getChildren().length; i++) {
+            if (monsterGroup.getChildren()[i].y > 700) {
+                monsterGroup.getChildren()[i].destroy();
+            }
         }
     }
 }
