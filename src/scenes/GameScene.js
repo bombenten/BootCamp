@@ -5,7 +5,7 @@ let bg;
 let background;
 let monster;
 let monsterEvent;
-let monsterGroup;
+let monsterGroup
 let keyW;
 let keyA;
 let keyS;
@@ -24,7 +24,7 @@ class GameScene extends Phaser.Scene {
         this.load.spritesheet('mario','src/img/TerDjjW.png' ,
       { frameWidth:60, frameHeight:95 });
       this.load.spritesheet('monster','src/img/Frog.png' ,
-      { frameWidth:41.125, frameHeight:50 });
+      { frameWidth:41, frameHeight:47 });
 
     }
 
