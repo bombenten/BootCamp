@@ -40,7 +40,7 @@ class GameScene extends Phaser.Scene {
 
         //createphx
         for (let i = 0; i < 5; i++) {
-            let phx = this.physics.add.sprite(70 + (i*phxSpacing), 0, "phx");
+            let phx = this.physics.add.sprite(Phaser.Math.Between(30,450)+(i*phxSpacing), 0, "phx");
             phx.setScale(0.2);
             phx.speed = (Math.random() * 2) + 1;
             phx.startY = -(phx.height);
