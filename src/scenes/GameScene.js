@@ -70,7 +70,7 @@ class GameScene extends Phaser.Scene {
         eventMonster = this.time.addEvent({
             delay: Phaser.Math.Between(1000,5000),
             callback: function(){
-                monster = this.physics.add.sprite(Phaser.Math.Between(1,400),0,'monster')
+                monster = this.physics.add.sprite(Phaser.Math.Between(1,450),0,'monster')
                 .setScale(3);
                 monsterGroup.add(monster);
                 monster.anims.play('monsterAni',true);
