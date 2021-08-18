@@ -117,7 +117,7 @@ class GameScene extends Phaser.Scene {
         }else{
             player.setVelocityX(0);
         }
-        // player.anims.player('playerAni', true);
+        player.anims.play('playerAni', true);
         
         for (let i = 0; i < monsterGroup.getChildren().length; i++) {
             if (monsterGroup.getChildren()[i].y > 800) {
