@@ -2,10 +2,7 @@ import Phaser from "phaser";
 
 let pikachu;
 let background;
-let keyW;
-let keyA;
-let keyS;
-let keyD;
+
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -39,10 +36,7 @@ class GameScene extends Phaser.Scene {
         //     pikachu.x = pointer.x
         //     pikachu.y = pointer.y  //ตั้งให้ตำแหน่งตัวละครไปตามเมาส์ของเรา
         // })
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        
 
 
 
@@ -53,35 +47,7 @@ class GameScene extends Phaser.Scene {
         pikachu.anims.play('pikachuAni', true);
         background.tilePositionY -= 2;
 
-        // if(keyW.isDown){
-        //     pikachu.setVelocityY(-500);
-        // }else if(keyS.isDown){
-        //     pikachu.setVelocityY(500);
-        // }else{
-        //     pikachu.setVelocityY(0);
-        // }
-        // if(keyA.isDown){
-        //     pikachu.setVelocityX(-500);
-        // }else if(keyD.isDown){
-        //     pikachu.setVelocityX(500);
-        // }else{
-        //     pikachu.setVelocityX(0);
-        // }
-
-        if(keyW.isDown){
-            pikachu.setVelocityY(-500);
-        }else if(keyS.isDown){
-            pikachu.setVelocityY(500);
-        }else{
-            pikachu.setVelocityY(0);
-        }
-        if(keyA.isDown){
-            pikachu.setVelocityX(-500);
-        }else if(keyD.isDown){
-            pikachu.setVelocityX(500);
-        }else{
-            pikachu.setVelocityX(0);
-        }
+       
 
     }
 }
