@@ -17,9 +17,14 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('bg', 'src/img/mid-spilt crop.jpg');
+        // this.load.image('bg', 'src/img/mid-spilt crop.jpg');
+        this.load.image('bg', 'src/img/gregory-ligman-brickwall.jpg');
         this.load.image('dagger', 'src/img/jettdagg.png');
-        this.load.image('jett', 'src/img/jettEmbarrassing.png');
+        // this.load.image('jett', 'src/img/jettEmbarrassing.png');
+        this.load.spritesheet('jett','src/img/jettanimaybe-removebg-preview.png',
+        {frameWidth: 172 , frameHeight: 96});
+        // this.load.spritesheet('jett','src/img/realjett-removebg-preview.png',
+        // {frameWidth: 147.75 , frameHeight: 422});
         this.load.image('phx', 'src/img/My-Eyes.png');
     }
 
@@ -30,22 +35,37 @@ class GameScene extends Phaser.Scene {
         bg = this.add.tileSprite(0, 0, 450, 720, 'bg').setOrigin(0, 0);
         
         //createJett
-        jett = this.physics.add.sprite(240, 720, "jett");
-        jett.setScale(0.25);
+        // jett = this.physics.add.sprite(240, 720, "jett");
+        // jett.setScale(0.23);
+        // jett.speed = 600;
+        // jett.setCollideWorldBounds(true);
+
+        jett = this.physics.add.sprite(240, 700, 'jett').setScale(1);
+        this.anims.create({
+            key: 'jettAni',
+            frames: this.anims.generateFrameNumbers('jett', {
+                start: 0,
+                end: 14
+            }),
+            duration: 1000,
+            framerate: 0,
+            repeat: -1
+        });
         jett.speed = 600;
+        jett.setOffset(15,0);
         jett.setCollideWorldBounds(true);
+
 
         daggerGrp = this.add.group();
         phxGrp = this.add.group();
 
         //createphx
         for (let i = 0; i < 5; i++) {
-            let phx = this.physics.add.sprite(Phaser.Math.Between(30,450)+(i*phxSpacing), 0, "phx");
+            let phx = this.physics.add.sprite(60+(i*phxSpacing), 0, "phx");
             phx.setScale(0.2);
             phx.speed = (Math.random() * 2) + 1;
             phx.startY = -(phx.height);
             phx.y = phx.startY;
-            phx.magnitude = Math.random() * 20;
             phxGrp.add(phx);
         }
 
@@ -71,6 +91,10 @@ class GameScene extends Phaser.Scene {
     
     update(delta, time) {
         this.label.setText('(' + this.pointer.x + ', ' + this.pointer.y + ')');
+
+        jett.anims.play('jettAni', true);
+
+        bg.tilePositionY += 1;
         //movement
         if (keyUp.isDown) {
             jett.setVelocityY(-jett.speed);
