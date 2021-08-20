@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-let Jotaro;
+let Demon;
 let backGround;
 let objPacman;
 let event;
@@ -22,15 +22,15 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         // BackGround
-        this.load.image('TileSprite', 'src/image/TileSprite.png');
+        this.load.image('TileSprite', 'src/image/SkyTile.png');
 
         // Character
-        this.load.spritesheet('jotaro','src/image/Demon.png',
+        this.load.spritesheet('Demon','src/image/Demon.png',
         {frameWidth: 86.66 , frameHeight: 82});
 
         // Monster
-        this.load.spritesheet('Pacman', 'src/image/Pacman.png',
-        {frameWidth: 17.375 , frameHeight: 18});
+        this.load.spritesheet('Pacman', 'src/image/KingSmile.png',
+        {frameWidth: 17.25 , frameHeight: 29});
     }
 
     create() {
@@ -39,14 +39,14 @@ class GameScene extends Phaser.Scene {
         backGround = this.add.tileSprite(0,0,850,1400, 'TileSprite').setOrigin(0,0);
         
         // Character
-        Jotaro = this.physics.add.sprite(425, 700, 'jotaro')
+        Demon = this.physics.add.sprite(425, 700, 'Demon')
         .setScale(2)
         .setImmovable()
         .setCollideWorldBounds(true); 
 
         this.anims.create({
-            key: 'jotaroAni',
-            frames: this.anims.generateFrameNumbers('jotaro', {
+            key: 'DemonAni',
+            frames: this.anims.generateFrameNumbers('Demon', {
                 start: 0,
                 end: 7
             }),
@@ -71,19 +71,19 @@ class GameScene extends Phaser.Scene {
         event = this.time.addEvent({
             delay: 1000,
             callback: function () {
-                Pacman = this.physics.add.sprite(Phaser.Math.Between(0, 450) , 50, 'Pacman')
+                Pacman = this.physics.add.sprite(Phaser.Math.Between(0, 450) , -50, 'Pacman')
                 .setScale(3);
                 Pacman.anims.play('PacmanAni', true);
                 objPacman.add(Pacman);
-                Pacman.setVelocityY(Phaser.Math.Between(500, 200));
-                this.physics.add.overlap(Pacman, Jotaro, PacDestroy);
+                Pacman.setVelocityY(Phaser.Math.Between(500, 700));
+                this.physics.add.overlap(Pacman, Demon, PacDestroy);
             },
             callbackScope: this,
             loop: true,
             paused: false,
         });
 
-        function PacDestroy(Pacman, Jotaro) {
+        function PacDestroy(Pacman, Demon) {
             Pacman.destroy();
 
         } 
@@ -97,25 +97,25 @@ class GameScene extends Phaser.Scene {
     
     update(delta, time) {
         // Background
-        backGround.tilePositionY -= 0.5;
+        backGround.tilePositionY -= 1;
         
         // Player 
-        Jotaro.anims.play('jotaroAni', true);
+        Demon.anims.play('DemonAni', true);
         
         // Player Control
         if(keyW.isDown){
-            Jotaro.setVelocityY(-500);
+            Demon.setVelocityY(-500);
         }else if(keyS.isDown){
-            Jotaro.setVelocityY(500);
+            Demon.setVelocityY(500);
         }else{
-            Jotaro.setVelocityY(0);
+            Demon.setVelocityY(0);
         }
         if(keyA.isDown){
-            Jotaro.setVelocityX(-500);
+            Demon.setVelocityX(-500);
         }else if(keyD.isDown){
-            Jotaro.setVelocityX(500);
+            Demon.setVelocityX(500);
         }else{
-            Jotaro.setVelocityX(0);
+            Demon.setVelocityX(0);
         }
         
         // Monster Destroy
