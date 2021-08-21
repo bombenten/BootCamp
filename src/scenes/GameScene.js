@@ -51,8 +51,9 @@ class GameScene extends Phaser.Scene {
             callback: function () {
                 monster = this.physics.add.image(Phaser.Math.Between(1, 450), 0, 'monster')
                 .setScale(0.3);
-                monster.setVelocityY(200);
                 monsterGroup.add(monster);
+                monsterGroup.setVelocityY(200);
+               
                 // this.physics.add.collider(cookiePlayer, monsterGroup);
 
                 this.physics.add.collider(cookiePlayer, monster, DestroyMonster);
