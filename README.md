@@ -36,4 +36,4 @@ Run:
 
 or
 
-```yarn deploy```kkboy
+```yarn deploy```kkboyGGUU
