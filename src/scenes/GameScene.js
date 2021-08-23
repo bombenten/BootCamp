@@ -12,7 +12,7 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
-        
+        GGWP
     }
     
     update(delta, time) {
