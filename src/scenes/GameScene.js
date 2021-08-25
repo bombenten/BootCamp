@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+let player
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -8,11 +9,11 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-      
+      this.load.image('player','D:\drawing\profile.png')
     }
 
     create() {
-        GGWP
+    player = this.physics.add.image(200,300,'player');
     }
     
     update(delta, time) {
