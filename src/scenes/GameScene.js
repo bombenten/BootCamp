@@ -10,6 +10,10 @@ let keyW;
 let keyA;
 let keyS;
 let keyD;
+let bombbullet;
+let bombgroup;
+let keySpacebar;
+
 
 
 class GameScene extends Phaser.Scene {
@@ -25,6 +29,7 @@ class GameScene extends Phaser.Scene {
       { frameWidth:60, frameHeight:95 });
       this.load.spritesheet('monster','src/img/Frog.png' ,
       { frameWidth:41, frameHeight:47 });
+      this.load.image('bombbullet','src/img/bombbullet.png');
 
     }
 
@@ -39,7 +44,11 @@ class GameScene extends Phaser.Scene {
         .setScale(5.1);
         //mario
         mario = this.physics.add.sprite(225,600,'mario').setScale(1).setCollideWorldBounds(true);
-        // monster = this.physics.add.sprite(100,400,'monster').setScale(3.5);
+        //bullet
+        // bombbullet = this.physics.add.sprite(205,351,'bombbullet').setScale(1);
+        bombgroup = this.physics.add.group();
+
+ 
         monsterGroup = this.physics.add.group();
         monsterEvent = this.time.addEvent({
             delay: Phaser.Math.Between(1000,2000),
@@ -49,11 +58,13 @@ class GameScene extends Phaser.Scene {
                 monster.anims.play('monster',true);
                 monster.setVelocityY(80);
                 this.physics.add.overlap(mario,monster,monsterDestroy);
+                // this.physics.add.overlap(bombbullet,monster,monsterDestroy);
             },
             callbackScope: this,
             loop: true,
             paused: false,
         });
+       
         this.anims.create({
             key: 'gomario',
             frames: this.anims.generateFrameNumbers('mario',{
@@ -74,19 +85,31 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         })
         //destroy
+        this.physics.add.overlap(monsterGroup,bombgroup,function onHit(monster, bombbullet){
+            bombbullet.destroy();
+            monster.destroy();
+            // monster.y = monster.startY;
+            // monster.speed = (Math.random() * 2) + 1;
+        });
+        // function monsterDestroy(bombbullet, monster){
+        //     monster.destroy();
+        // }
         function monsterDestroy(mario, monster){
             monster.destroy();
         }
+      
         //เดิน
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keySpacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     
     update(delta, time) {
     //Show X Y
+    
         this.label.setText('(' + this.pointer.x + ', ' + this.pointer.y + ')');
         background.tilePositionY -=1;
         mario.anims.play('gomario',true);
@@ -106,6 +129,21 @@ class GameScene extends Phaser.Scene {
             mario.setVelocityX(500);
         }else{
             mario.setVelocityX(0);
+        }
+    
+        //bullet
+        if(Phaser.Input.Keyboard.JustDown(keySpacebar)){
+            let bombbullet = this.physics.add.sprite(mario.x,mario.y,"bombbullet");
+            bombbullet.setScale(0.1);
+            // bombbullet.body.velocity.y= -bombbulletspeed;
+            bombgroup.add(bombbullet);
+            bombgroup.setVelocityY(-200);
+        }
+        for(let i=0;i< bombgroup.getChildren().length;i++){
+            let bombbullet = bombgroup.getChildren()[i];
+            if(bombbullet.y<0){
+                bombbullet.destroy();
+            }
         }
         //unlag loop
         for (let i = 0; i < monsterGroup.getChildren().length; i++) {
