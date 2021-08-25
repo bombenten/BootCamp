@@ -36,7 +36,7 @@ class GameScene extends Phaser.Scene {
         //BG
         background = this.add.tileSprite(0,0,850,1400,'bg')
         .setOrigin(0,0)
-        .setScale(1);
+        .setScale(5.1);
         //mario
         mario = this.physics.add.sprite(225,600,'mario').setScale(1).setCollideWorldBounds(true);
         // monster = this.physics.add.sprite(100,400,'monster').setScale(3.5);
@@ -88,6 +88,7 @@ class GameScene extends Phaser.Scene {
     update(delta, time) {
     //Show X Y
         this.label.setText('(' + this.pointer.x + ', ' + this.pointer.y + ')');
+        background.tilePositionY -=1;
         mario.anims.play('gomario',true);
         // monsterEvent.anims.play('monster',true);
         //mario ขยับ
@@ -100,6 +101,7 @@ class GameScene extends Phaser.Scene {
         }
         if(keyA.isDown){
             mario.setVelocityX(-500);
+       
         }else if(keyD.isDown){
             mario.setVelocityX(500);
         }else{
