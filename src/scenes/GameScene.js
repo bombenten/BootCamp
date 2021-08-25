@@ -12,6 +12,10 @@ let keyA;
 let keyS;
 let keyD;
 
+let keyFire;
+
+let bulletspeed = -200;
+
 //event
 let bulletEvent;
 let monsterEvent;
@@ -54,7 +58,9 @@ class GameScene extends Phaser.Scene {
         .setCollideWorldBounds(true)
         .setScale(2);
 
-        
+        function DestroyMonster(bullet, monster){
+            monster.destroy();
+        }
 
         monsterGroup = this.physics.add.group();
 
@@ -68,7 +74,7 @@ class GameScene extends Phaser.Scene {
                 monsterGroup.setVelocityY(200);
                 
                 monster.anims.play('animonster',true);
-                // this.physics.add.collider(bullet, monster, DestroyMonster);
+                this.physics.add.collider(bullet, monster, DestroyMonster);
             },
             callbackScope: this,
             loop: true,
@@ -77,26 +83,7 @@ class GameScene extends Phaser.Scene {
 
         bulletGroup = this.physics.add.group();
         
-        bulletEvent = this.time.addEvent({
-            delay: 100,
-            callback: function(){
-                //สร้างกระสุนขึ้นมาชื่อ bullet 
-                bullet = this.physics.add.sprite(goldManPlayer.x, goldManPlayer.y-50,'bulletcoin')
-                    .setScale(1)      //กำหนดขนาด
-                    .setSize(1);      //กำหนดตำแหน่ง Hitbox
-                //เพิ่ม bullet ลงใน bulletGroup
-                bulletGroup.add(bullet);
-                //กำหนดความเร็วเคลี่อนที่ของ bulletGroup
-                bulletGroup.setVelocityY(-200);
-                bullet.anims.play('anicoin',true);
-
-                this.physics.add.collider(bullet, monster, DestroyMonster);
-
-                },
-            callbackScope: this,
-            loop: true,
-            pause: false
-        });
+        
 
         this.anims.create({
             key: 'anigoldman',
@@ -128,9 +115,7 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         });
 
-        function DestroyMonster(bullet, monster){
-            monster.destroy();
-        }
+        
 
         //Player Pointermove
         // this.input.on('pointermove', (pointer)=>{
@@ -143,6 +128,8 @@ class GameScene extends Phaser.Scene {
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        keyFire = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     }
     
@@ -173,11 +160,22 @@ class GameScene extends Phaser.Scene {
             goldManPlayer.setVelocityX(0);
         }
 
+        if(Phaser.Input.Keyboard.JustDown(keyFire)){
+            bullet = this.physics.add.sprite(goldManPlayer.x,goldManPlayer.y,"bulletcoin")
+            .setImmovable()
+            .setScale(1)
+            .setSize(1);
+            // bulletGroup.body.velocity.y= -bulletspeed;
+            bulletGroup.add(bullet);
+            bulletGroup.setVelocityY(-200);
+        }
+
         for (let i = 0; i < monsterGroup.getChildren().length; i++) {
             if (monsterGroup.getChildren()[i].y > 700) {
                 monsterGroup.getChildren()[i].destroy();
             }
         }
+        
 
         for (let i = 0; i < bulletGroup.getChildren().length; i++) {
             if (bulletGroup.getChildren()[i].y > 700) {
