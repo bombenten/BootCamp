@@ -1,5 +1,9 @@
 import Phaser from "phaser";
-let player
+let player;
+let keyw;
+let keya;
+let keys;
+let keyd;
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -9,11 +13,15 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-      this.load.image('player','D:\drawing\profile.png')
+      this.load.image('player','C:\Users\ASUS\Desktop\cmder\projects\Hello-HomeWork\src\image')
     }
 
     create() {
-    player = this.physics.add.image(200,300,'player');
+    player = this.physics.add.image(300,300,'player');
+    keyw= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.w);
+    keya= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.a);
+    keys= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.s);
+    keyd= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.d);
     }
     
     update(delta, time) {
