@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import src from "phaser/plugins/camera3d/src";
 let jotaro;
 let priToL;
 let priToR;
@@ -9,6 +10,10 @@ let monsEventR;
 
 let groupToL;
 let groupToR;
+let bullet;
+let bulletGroup;
+let bulletLDs;
+let bulletRDs;
 
 let background;
 let tileBg;
@@ -22,8 +27,11 @@ let hitboxQ
 let imgW;
 let hitboxW;
 
-let Q;
-let W;
+let left;
+let right;
+let up;
+let down;
+let keyBullet;
 
 let score = 0;
 let scoreText;
@@ -53,23 +61,11 @@ class GameScene extends Phaser.Scene {
         this.load.image('imgW','src/image/ManiaPic/buttonGreen.png');
         this.load.image('block1','src/image/ManiaPic/mania-bg.png');
         this.load.image('block2','src/image/ManiaPic/mania-bg.png');
+        this.load.spritesheet('bullet','src/image/flymons.png',
+        {frameWidth:28 , frameHeight:18});
     }
 
     create() {
-         // jaigere = this.physics.add.image(220, 200, 'milos')
-        // .setScale(3)
-        // .setCollideWorldBounds(true);
-        // ground = this.physics.add.image(250,600,'ground')
-        // .setCollideWorldBounds(true)
-        // .setScale(0.5,0.25);
-        // this.physics.add.collider(jaigere,ground);
-        // this.physics.add.overlap(jaigere,ground, ()=>this.add.sprite(220,300,'badboy').setScale(1.5));
-        
-
-        
-        //background = this.add.tileSprite(0, 0, 850, 1400, 'bg').setOrigin(0, 0).setScale(5);
-        //poke1 = this.add.image(100,200,'poke1');
-
         //tileBackground
         tileBg = this.add.tileSprite(89,0,550,1450,'tileBg').setOrigin(0,0)
         .setScale(0.5)
@@ -105,6 +101,8 @@ class GameScene extends Phaser.Scene {
         .setScale(2).setDepth(3);
         this.physics.add.collider(block1,jotaro);
         this.physics.add.collider(block2,jotaro);
+        jotaro.setCollideWorldBounds(true);
+
 
         
         //animation player
@@ -132,11 +130,28 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         }
         )
+
+        //animation bullet
+        this.anims.create(
+            {
+            key: 'bulletAni',
+            frames: this.anims.generateFrameNumbers('bullet', {
+                start: 0,
+                end: 7
+            }),
+            duration: 500,
+            framerate: 0,
+            repeat: -1
+        }
+        )
                
         //key input
-        Q = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-        W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        
+        left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        up = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        down = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+        keyBullet = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
         //event monsterLeft
         groupToL = this.physics.add.group();
         monsEvent = this.time.addEvent({
@@ -159,6 +174,7 @@ class GameScene extends Phaser.Scene {
                  )
                 groupToL.setVelocityY((Math.random() * +500)+300);
                 priToL.anims.play('priToLAni',true);
+                this.physics.add.overlap(bulletGroup,groupToL,bulletLDs);
                 
             },
             callbackScope: this,
@@ -187,6 +203,7 @@ class GameScene extends Phaser.Scene {
          )
                 groupToR.setVelocityY((Math.random() * +500)+300);
                 priToR.anims.play('priToRAni',true);
+                this.physics.add.overlap(bulletGroup,groupToR,bulletRDs);
                 
             },
             callbackScope: this,
@@ -194,18 +211,35 @@ class GameScene extends Phaser.Scene {
             paused: false
         })
 
-
-        this.physics.add.overlap(imgQ,groupToL,priToLDs);
+        //overlap monsL
+        this.physics.add.overlap(jotaro,groupToL,priToLDs);          
         function priToLDs(jotaro,priToL){
-            priToL.destroy();
+            priToL.destroy();         
             score++;
         }
-
-        this.physics.add.overlap(imgW,groupToR,priToRDs);
+        //overlap monsR
+        this.physics.add.overlap(jotaro,groupToR,priToRDs);
         function priToRDs(jotaro,priToR){
             priToR.destroy();
             score++;
         }
+
+        // this.physics.add.overlap(bulletGroup,groupToL,bulletLDs);
+        function bulletLDs(bullet,priToR){
+            priToL.destroy();
+            bullet.destroy();
+            score++;
+        }
+
+        
+        function bulletRDs(bullet,priToR){
+            priToR.destroy();
+            bullet.destroy();
+            score++;
+        }
+
+        bulletGroup = this.physics.add.group();
+        
 
         scoreText = this.add.text(10, 20, 'score: 0', 
         { font: "50px Pixel Operator 8", fill: '#ffff' }).setDepth(5).setScale(2);
@@ -226,31 +260,56 @@ class GameScene extends Phaser.Scene {
         //imgW.setAlpha((W.isDown) ? 1 : 0.2);
         
         //can't setSize(); :(
-        if(Q.isDown){       
-            imgQ.setAlpha(1).setOffset(32,552.5);
+        if(left.isDown){       
+            imgQ.setAlpha(1);//.setOffset(32,552.5);
             jotaro.anims.play('jotaroAniLeft', true);           
             jotaro.setVelocityX(-700);
-        }else if(W.isDown){
-            imgW.setAlpha(1).setOffset(281,552.5);
+        }else if(right.isDown){
+            imgW.setAlpha(1);//.setOffset(281,552.5);
             jotaro.anims.play('jotaroAniRight', true);
             jotaro.setVelocityX(700);
         }else{           
-            imgQ.setAlpha(0.2).setOffset(-200,0);
-            imgW.setAlpha(0.2).setOffset(500,0);
+            imgQ.setAlpha(0.2);//.setOffset(-200,0);
+            imgW.setAlpha(0.2);//.setOffset(500,0);
             jotaro.setVelocityX(0);        
+        }
+        if(up.isDown){
+            jotaro.setVelocityY(-500);
+        } 
+        else if(down.isDown){
+            jotaro.setVelocityY(500);
+        }
+        else{
+            jotaro.setVelocityY(0);
         }
         
         //destroy not work :(
         for (let i = 0; i < groupToL.getChildren().length; i++) {
             console.log("wow");
-            if (groupToL.getChildren()[i].y < 10) {
+            if (groupToL.getChildren()[i].y > 720) {
                     groupToL.getChildren()[i].destroy();
             }
         }
         for (let i = 0; i < groupToR.getChildren().length; i++) {
             console.log("wow2");
-            if (groupToR.getChildren()[i].y < 10) {
+            if (groupToR.getChildren()[i].y > 720) {
                     groupToR.getChildren()[i].destroy();
+            }
+        }
+
+
+        if(Phaser.Input.Keyboard.JustDown(keyBullet)){
+            bullet = this.physics.add.sprite(jotaro.x, jotaro.y,'bullet')
+            .setScale(1.5).setDepth(3);
+            bullet.rotation -= 1.58
+            bullet.anims.play('bulletAni',true);
+            bulletGroup.add(bullet);
+            bullet.body.velocity.y = -500;                                
+        }
+
+        for (let i = 0; i < bulletGroup.getChildren().length; i++) {           
+            if (bulletGroup.getChildren()[i].y < 0) {
+                    bulletGroup.getChildren()[i].destroy();
             }
         }
 
