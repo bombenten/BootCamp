@@ -13,7 +13,7 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-      this.load.image('player','C:\Users\ASUS\Desktop\cmder\projects\Hello-HomeWork\src\image')
+      this.load.image('player','src\image\profile.png')
     }
 
     create() {
