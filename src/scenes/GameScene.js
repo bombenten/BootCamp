@@ -1,7 +1,9 @@
 import Phaser from "phaser";
 let player;
-let monster;
 let backGround;
+
+//Monster
+let monster;
 let eventMonster;
 let monsterGroup;
 
@@ -10,6 +12,11 @@ let keyW;
 let keyA;
 let keyS;
 let keyD;
+
+//Bullet
+let pokebullet;
+let bulletgroup;
+let keySpacebar;
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -24,7 +31,8 @@ class GameScene extends Phaser.Scene {
         {frameWidth: 29, frameHeight: 32});
         this.load.spritesheet('monster','src/image/monster.png',
         {frameWidth: 27.5, frameHeight: 21});
-        
+        this.load.image('pokebullet','src/image/pokebullet.png')
+
     }
 
     create() {
@@ -87,6 +95,14 @@ class GameScene extends Phaser.Scene {
             monster.destroy();
         }
 
+        //Bullet
+        bulletgroup = this.physics.add.group();
+        this.physics.add.overlap(monsterGroup,bulletgroup,function hit(monster,pokebullet){
+            pokebullet.destroy();
+            monster.destroy();
+        });
+
+        keySpacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //keyMapping
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -118,7 +134,24 @@ class GameScene extends Phaser.Scene {
             player.setVelocityX(0);
         }
         player.anims.play('playerAni', true);
+
+        //BulletKey
+        if(Phaser.Input.Keyboard.JustDown(keySpacebar)){
+            pokebullet = this.physics.add.sprite(player.x,player.y,'pokebullet')
+            .setImmovable()
+            .setScale(0.025);
+            bulletgroup.add(pokebullet);
+            bulletgroup.setVelocityY(-200);
+        }
         
+        for(let i = 0;i < bulletgroup.getChildren().length;i++){
+            let pokebullet = bulletgroup.getChildren()[i];
+            if(pokebullet.y < 0){
+                pokebullet.destroy();
+            }
+        }
+
+        //Reduce resorces loop
         for (let i = 0; i < monsterGroup.getChildren().length; i++) {
             if (monsterGroup.getChildren()[i].y > 800) {
                 monsterGroup.getChildren()[i].destroy();
