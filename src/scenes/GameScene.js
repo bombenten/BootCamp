@@ -9,6 +9,7 @@ let daggerGrp;
 let phxSpacing = 80;
 let firstsound;
 let stkill;
+let bgsound;
 
 
 class GameScene extends Phaser.Scene {
@@ -30,6 +31,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('phx', 'src/img/My-Eyes.png');
         this.load.audio('jettUlt', 'src/sound/JettUltAllyCast.mp3');
         this.load.audio('1kill', 'src/sound/1stkill.mp3');
+        // this.load.audio('bgsound', 'https://soundcloud.com/stevenmelin/cozy-winter-village?in=stevenmelin/sets/steven-melin-free-2d-adventure');
     }
 
     create() {
@@ -40,6 +42,8 @@ class GameScene extends Phaser.Scene {
         
         firstsound = this.sound.add('jettUlt');
         firstsound.play();
+        // bgsound = this.sound.add('bgsound');
+        // bgsound.play();
         stkill = this.sound.add('1kill');
         //createJett
         // jett = this.physics.add.sprite(240, 720, "jett");
