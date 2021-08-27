@@ -125,7 +125,7 @@ class GameScene extends Phaser.Scene {
 
         //fire and update
         if (Phaser.Input.Keyboard.JustDown(keyFire)) {
-            let dagger = this.physics.add.sprite(jett.x, jett.y, "dagger");
+            let dagger = this.physics.add.sprite(jett.x, jett.y - (jett.height), "dagger");
             dagger.setScale(0.19);
             dagger.body.velocity.y = -daggerSpeed;
             daggerGrp.add(dagger);
