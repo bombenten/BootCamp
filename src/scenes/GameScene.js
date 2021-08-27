@@ -74,6 +74,7 @@ class GameScene extends Phaser.Scene {
             duration:900,
             repeat: -1
         })
+        mario.anims.play('gomario',true);
 
         this.anims.create({
             key: 'monster',
@@ -105,14 +106,14 @@ class GameScene extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keySpacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
-
+    // .setFlipX(true);
     
     update(delta, time) {
     //Show X Y
     
         this.label.setText('(' + this.pointer.x + ', ' + this.pointer.y + ')');
         background.tilePositionY -=1;
-        mario.anims.play('gomario',true);
+        
         // monsterEvent.anims.play('monster',true);
         //mario ขยับ
         if(keyW.isDown){
@@ -124,9 +125,11 @@ class GameScene extends Phaser.Scene {
         }
         if(keyA.isDown){
             mario.setVelocityX(-500);
+            mario.anims.play('gomario',true).setFlipX(true);
        
         }else if(keyD.isDown){
             mario.setVelocityX(500);
+            mario.anims.play('gomario',true).setFlipX(false);
         }else{
             mario.setVelocityX(0);
         }
