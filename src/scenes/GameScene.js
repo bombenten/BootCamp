@@ -58,10 +58,6 @@ class GameScene extends Phaser.Scene {
         .setCollideWorldBounds(true)
         .setScale(2);
 
-        function DestroyMonster(bullet, monster){
-            monster.destroy();
-        }
-
         monsterGroup = this.physics.add.group();
 
         //Monster Event
@@ -74,13 +70,13 @@ class GameScene extends Phaser.Scene {
                 monsterGroup.setVelocityY(200);
                 
                 monster.anims.play('animonster',true);
-                this.physics.add.collider(bullet, monster, DestroyMonster);
+                this.physics.add.overlap(bulletGroup, monster, DestroyMonster);
             },
             callbackScope: this,
             loop: true,
             paused: false
         })
-
+        
         bulletGroup = this.physics.add.group();
         
         
@@ -105,18 +101,16 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.anims.create({
-            key: 'anicoin',
-            frames: this.anims.generateFrameNumbers('bulletcoin',{
-                start:0,
-                end:13
-            }),
-            duration:900,
-            repeat: -1
-        });
+        
 
         
 
+        function DestroyMonster(bullet, monster){
+            monster.destroy();
+            bullet.destroy();
+
+        }
+        
         //Player Pointermove
         // this.input.on('pointermove', (pointer)=>{
         //     cookiePlayer.x = pointer.x
@@ -130,7 +124,7 @@ class GameScene extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         keyFire = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
+        
     }
     
     update(delta, time) {
@@ -168,8 +162,20 @@ class GameScene extends Phaser.Scene {
             // bulletGroup.body.velocity.y= -bulletspeed;
             bulletGroup.add(bullet);
             bulletGroup.setVelocityY(-200);
-        }
 
+            this.anims.create({
+                key: 'anicoin',
+                frames: this.anims.generateFrameNumbers('bulletcoin',{
+                    start:0,
+                    end:13
+                }),
+                duration:900,
+                repeat: -1
+            });
+            bullet.anims.play('anicoin',true);
+            
+        }
+        
         for (let i = 0; i < monsterGroup.getChildren().length; i++) {
             if (monsterGroup.getChildren()[i].y > 700) {
                 monsterGroup.getChildren()[i].destroy();
