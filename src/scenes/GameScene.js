@@ -5,6 +5,10 @@ let backGround;
 let objPacman;
 let event;
 let Pacman;
+let objFireball;
+let FireballEvent;
+let Fireball;
+
 
 
 //Controller
@@ -26,11 +30,15 @@ class GameScene extends Phaser.Scene {
 
         // Character
         this.load.spritesheet('Demon','src/image/Demon.png',
-        {frameWidth: 86.66 , frameHeight: 82});
+        {frameWidth: 86.66, frameHeight: 82});
 
         // Monster
         this.load.spritesheet('Pacman', 'src/image/KingSmile.png',
-        {frameWidth: 17.25 , frameHeight: 29});
+        {frameWidth: 17.25, frameHeight: 29});
+
+        //Fireball
+        this.load.spritesheet('Fireball','src/image/Fireball.png',
+        {frameWidth: 95.5, frameHeight: 99});
     }
 
     create() {
@@ -83,10 +91,46 @@ class GameScene extends Phaser.Scene {
             paused: false,
         });
 
+
         function PacDestroy(Pacman, Demon) {
             Pacman.destroy();
-
         } 
+
+        //Fireball
+        this.anims.create({
+            key: 'FireballAni',
+            frames: this.anims.generateFrameNumbers('Fireball', {
+                start: 0,
+                end: 5
+            }),
+            duration: 500,    
+            repeat: -1
+        });
+
+        objFireball = this.physics.add.group();
+
+        FireballEvent = this.time.addEvent({
+            delay: 1500,
+            callback: function(){
+                Fireball = this.physics.add.sprite(Demon.x, Demon.y -30,'Fireball')
+                    .setScale(2)
+                    .setSize(2);
+                Fireball.anims.play('FireballAni', true);
+                objFireball.add(Fireball);
+                objFireball.setVelocityY(-500);
+                this.physics.add.overlap(Pacman, Fireball, FireDestroy);
+                },
+            callbackScope: this,
+            loop: true,
+            pause: false
+        });
+
+        function FireDestroy(Pacman, Fireball) {
+            Fireball.destroy();
+            Pacman.destroy();
+        } 
+
+
 
         // Player Control
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -94,14 +138,14 @@ class GameScene extends Phaser.Scene {
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     }
-    
+
     update(delta, time) {
         // Background
         backGround.tilePositionY -= 1;
         
         // Player 
         Demon.anims.play('DemonAni', true);
-        
+
         // Player Control
         if(keyW.isDown){
             Demon.setVelocityY(-500);
@@ -117,14 +161,22 @@ class GameScene extends Phaser.Scene {
         }else{
             Demon.setVelocityX(0);
         }
-        
+
         // Monster Destroy
         for (let i = 0; i < objPacman.getChildren().length; i++) {
             if (objPacman.getChildren()[i].y > 700) {
                 objPacman.getChildren()[i].destroy();
             }
         }
+        
+        //FireballDestroy
+        for (let i = 0; i <  objFireball.getChildren().length; i++) {
+            if (objFireball.getChildren()[i].y <= -50) {
+                objFireball.getChildren()[i].destroy();
+            }
+        }
     }
+
 }
 
 export default GameScene;
