@@ -118,17 +118,17 @@ class GameScene extends Phaser.Scene {
                 Fireball.anims.play('FireballAni', true);
                 objFireball.add(Fireball);
                 objFireball.setVelocityY(-500);
-                this.physics.add.overlap(Pacman, Fireball, FireDestroy);
+                this.physics.add.overlap(Pacman, objFireball, FireDestroy);
                 },
             callbackScope: this,
             loop: true,
             pause: false
         });
 
-        function FireDestroy(Pacman, Fireball) {
+        function FireDestroy(Pacman, objFireball) {
             Fireball.destroy();
             Pacman.destroy();
-        } 
+        }
 
 
 
