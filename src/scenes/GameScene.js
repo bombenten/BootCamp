@@ -39,7 +39,7 @@ class GameScene extends Phaser.Scene {
 
     create() {
          // Background
-         backGround = this.add.tileSprite(0,0,850,1400, 'TileSprite').setOrigin(0,0).setScale(8);
+         backGround = this.add.tileSprite(0,0,850,1400, 'TileSprite').setOrigin(0,0).setScale(10);
 
          //player
          player = this.physics.add.sprite(190,600,'player')
