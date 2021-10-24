@@ -20,8 +20,8 @@ const config = {
         }
     },
     scene: [
-        // GameScene,
-        test
+        GameScene,
+        // test
     ],
     
     
