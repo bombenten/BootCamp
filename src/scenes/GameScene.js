@@ -7,10 +7,9 @@ let daggerSpeed = 900;
 let phxGrp;
 let daggerGrp;
 let phxSpacing = 80;
-let firstsound;
-let stkill;
-let bgsound;
-
+let firstSound;
+let stKill;
+// let bgSound;
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -40,11 +39,11 @@ class GameScene extends Phaser.Scene {
 
         bg = this.add.tileSprite(0, 0, 450, 720, 'bg').setOrigin(0, 0);
         
-        firstsound = this.sound.add('jettUlt');
-        firstsound.play();
+        firstSound = this.sound.add('jettUlt');
+        firstSound.play();
         // bgsound = this.sound.add('bgsound');
         // bgsound.play();
-        stkill = this.sound.add('1kill');
+        stKill = this.sound.add('1kill');
         //createJett
         // jett = this.physics.add.sprite(240, 720, "jett");
         // jett.setScale(0.23);
@@ -84,7 +83,7 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(phxGrp,daggerGrp,function onHit(phx, dagger){
             dagger.destroy();
             phx.y = phx.startY;
-            stkill.play();
+            stKill.play();
             phx.speed = (Math.random() * 2) + 1;
         });
         this.physics.add.overlap(phxGrp,jett,function onHit(phx, jett){
