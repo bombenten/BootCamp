@@ -62,9 +62,18 @@ class GameScene extends Phaser.Scene {
         //     loop: true,
         //     pause: false
         // });
-
-
-
+// -------------------------------------------------
+        // manyR = this.time.addEvent({
+        // delay: 2000,
+        // callback : function(){
+        //      r = this.physics.add.image(Phaser.Math.Between(0, 420), 100, 's') 
+        //      .setVelocityY(100);
+        //  this.physics.add.collider(s,r);
+        //          },
+        //     callbackScope: this,
+        //     loop: true,
+        // });
+// -------------------------------------------------
         this.anims.create({
             key: 'priAni',
             frames: this.anims.generateFrameNumbers('pri', {
